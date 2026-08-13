@@ -12,6 +12,7 @@ export class AuthService {
         this.account = new Account(this.client)
     }
 
+    //----- account or auth services
     // SignUp account
     async createAccount({email, password, name}){
         try {
