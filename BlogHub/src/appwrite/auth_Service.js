@@ -37,7 +37,7 @@ export class AuthService {
         }
     }
 
-    // check user Login or not
+    // check user Login or not 'or' get account
     async getCurrentUser() {
         try {
             return await this.account.get();
