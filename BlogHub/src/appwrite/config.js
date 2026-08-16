@@ -131,6 +131,8 @@ export class Service{
         }
     }
 
+    // getFilePreview() takes the Appwrite file ID and gives you a URL that the browser can use to show that file.
+
     // file preview
     getFilePreview(fileId){
         return this.bucket.getFilePreview(
