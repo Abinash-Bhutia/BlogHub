@@ -1,33 +1,33 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { Button, Input, Logo } from './index'
-import { useDispatch } from 'react-redux'
 import authService from '../appwrite/auth_Service'
+import { Link, useNavigate } from 'react-router-dom'
+import { login } from '../store/authSlice'
+import { Input, Button, Logo } from './index'
+import { useDispatch } from 'react-redux'
 import { useForm } from 'react-hook-form'
-import { Login as authLogin } from '../store/authSlice'
 
-function Login() {
+function Signup() {
   const navigate = useNavigate()
+  const [error, setError] = useState('')
   const dispatch = useDispatch()
-  const [error, setError] = useState("")
   const { register, handleSubmit } = useForm()
 
-  const login = async (data) => {
-    setError("")
+  const signup = async (data) => {
+    setError('')
     try {
-      const session = await authService.login(data)      // there we passed a obj data
+      const session = await authService.createAccount(data)
       if (session) {
         const userData = await authService.getCurrentUser()
-        if (userData) dispatch(authLogin(userData))
+        if (userData) dispatch(login(userData))
         navigate('/')
       }
     } catch (error) {
-      setError(error.message)
+
     }
   }
 
   return (
-    <div className='flex items-center justify-center w-full'>
+    <div className='flex items-center justify-center'>
       <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
         <div className='mb-2 flex justify-center'>
           <span className='inline-block w-full max-w-[100px]'>
@@ -35,17 +35,26 @@ function Login() {
           </span>
         </div>
         <h2 className='text-center text-2xl font-bold leading-tight'>
-          Sign in to your Account
+          Sign up to create account
         </h2>
         <p className='mt-2 text-center text-base text-black/60'>
-          Don&apos;t have any account?&nbsp;
-          <Link to='/signup' className='font-medium text-primary transition-all duration-200 hover:underline'>
-            Sign Up
+          Already have an account?&nbsp;
+          <Link to='/login'
+            className='font-medium text-primary transition-all duration-200 hover:underline'>
+            Sign In
           </Link>
         </p>
         {error && <p className='text-red-600 mt-8 text-center'>{error}</p>}
-        <form onSubmit={handleSubmit(login)} className='mt-8'>
+
+        <form onSubmit={handleSubmit(signup)}>
           <div className='space-y-5'>
+            <Input
+              label='Full Name: '
+              placeholder='Enter your full name'
+              {...register('name', {
+                required: true,
+              })}
+            />
             <Input
               label='Email: '
               placeholder='Enter your email'
@@ -59,7 +68,7 @@ function Login() {
               })}
             />
             <Input
-              label='Password: '
+              label='Password'
               type='password'
               placeholder='Enter your password'
               {...register('password', {
@@ -69,7 +78,7 @@ function Login() {
             <Button
               type='submit'
               className='w-full'
-            >Sign in</Button>
+            >Create Account</Button>
           </div>
         </form>
       </div>
@@ -77,15 +86,4 @@ function Login() {
   )
 }
 
-export default Login
-
-// {Login as authLogin} => means we use the 'Login' component name as 'authLogin' in this file.
-
-// handleSubmit() => When the form is submitted, first validate all inputs. If everything is valid, call login() with the 'form' data.
-// register() => Connect an input field to React Hook Form so React Hook Form can track and validate that input.
-
-// handleSubmit & register both are 'event' we handel them.
-
-// or  All input fields state are managed by 'register' and automatically time of submit all the values are pick by 'handleSubmit' and submit the form.
-
-// {...register(key, values)} => we use spread because, if we are not using spread  all the inputs where using 'register' that values are  override.
+export default Signup 
