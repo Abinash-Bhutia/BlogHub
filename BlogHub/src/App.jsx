@@ -28,7 +28,7 @@ function App() {
       <div className='w-full block text-center'>
         <Header />
         <main>
-          Todo: {/* <Outlet /> */}
+          Todo: <Outlet />
         </main>
         <Footer />
       </div>

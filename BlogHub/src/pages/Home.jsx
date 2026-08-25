@@ -8,7 +8,7 @@ function Home() {
     useEffect(() => {
         appwriteService.getPosts().then((posts) => {
             if (posts) {
-                setPosts(posts.documents)
+                setPosts(posts.documents || [])
             }
         })
     }, [])
@@ -43,10 +43,6 @@ function Home() {
         </div>
     )
     
-
-  return (
-    <div>Home</div>
-  )
 }
 
 export default Home
