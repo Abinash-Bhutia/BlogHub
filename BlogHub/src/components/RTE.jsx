@@ -1,6 +1,7 @@
 import React from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import { Controller } from 'react-hook-form'
+import conf from '../conf/conf'
 
 export default function RTE({ name, control, label, defaultValue = '' }) {
     return (
@@ -12,6 +13,7 @@ export default function RTE({ name, control, label, defaultValue = '' }) {
                 control={control}
                 render={({ field: { onChange } }) => (
                     <Editor
+                        apiKey={conf.tinymceApiKey}
                         initialValue={defaultValue}
                         init={{
                             initialValue: defaultValue,
@@ -57,5 +59,5 @@ export default function RTE({ name, control, label, defaultValue = '' }) {
 // React Hook Form's useForm() gives you a control object.
 // control={control} is used to connect the Controller with your React Hook Form.
 
-// render() is used to display the Editor component and connect it with the form. 
+// render() is used to display the Editor component and connect it with the form.
 // or render() => if any changes in the field or 'Editor', inform that with a render.
