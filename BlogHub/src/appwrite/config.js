@@ -1,12 +1,12 @@
 import conf from "../conf/conf";
 import { Client, ID, TablesDB, Storage, Query } from "appwrite";
 
-export class Service{
+export class Service {
     client = new Client();
     tablesDB;
     bucket;
-    
-    constructor(){
+
+    constructor() {
         this.client
             .setEndpoint(conf.appwriteUrl)
             .setProject(conf.appwriteProjectId)
@@ -17,7 +17,7 @@ export class Service{
 
     //----- Database services
     // create post or rows
-    async createPost({title, slug, content, featuredImage, status, userId}) {  
+    async createPost({ title, slug, content, featuredImage, status, userId }) {
         try {
             return await this.tablesDB.createRow(
                 conf.appwriteDatabaseId,
@@ -33,11 +33,13 @@ export class Service{
             )
         } catch (error) {
             console.log("Appwrite service :: createPost :: error", error);
+            console.log("Error message:", error.message);
+            console.log("Error code:", error.code);
         }
     }
 
     // update post or rows
-    async updatePost(slug, {title, content, featuredImage, status}) {
+    async updatePost(slug, { title, content, featuredImage, status }) {
         try {
             return await this.tablesDB.updateRow(
                 conf.appwriteDatabaseId,
@@ -79,7 +81,7 @@ export class Service{
                 conf.appwriteTableId,
                 slug
             )
-            
+
         } catch (error) {
             console.log("Appwrite service :: getPost :: error", error);
             return false
@@ -99,7 +101,6 @@ export class Service{
             return false
         }
     }
-
 
 
     //----- file upload services into Storage 
@@ -134,7 +135,7 @@ export class Service{
     // getFilePreview() takes the Appwrite file ID and gives you a URL that the browser can use to show that file.
 
     // file preview
-    getFilePreview(fileId){
+    getFilePreview(fileId) {
         return this.bucket.getFilePreview(
             conf.appwriteBucketId,
             fileId

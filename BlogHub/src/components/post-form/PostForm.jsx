@@ -8,7 +8,7 @@ import apppwriteService from '../../appwrite/config'
 
 function PostForm({ post }) {
 
-    const { register, handleSubmit, watch, setValues, getValues, control } = useForm({
+    const { register, handleSubmit, watch, setValue, getValues, control } = useForm({
         defaultValues: {
             title: post?.title || '',
             slug: post?.slug || '',
@@ -40,12 +40,13 @@ function PostForm({ post }) {
             }
 
         } else {      // there we create the post, if nothing is for update.
-            const file = data.image[0] ? apppwriteService.uploadFile(data.image[0]) : null
+            const file = data.image[0] ? await apppwriteService.uploadFile(data.image[0]) : null
 
             if (file) {
                 const fileId = file.$id
                 data.featuredImage = fileId
 
+                console.log("Slug being submitted:", data.slug)
                 const dbPost = await apppwriteService.createPost({
                     ...data,
                     userId: userData.$id,
@@ -58,28 +59,28 @@ function PostForm({ post }) {
     }
 
     // change the title into 'slug'
-    const slugTransform = useCallback(() => {
-        if (value && typeof value === 'string')
-            return value.trim()
-                .toLowerCase()
-                .replace(/^[a-zA-Z\d\s]+/g, '-')
-                .replace(/\s/g, '-')
-        return ''
-    }, [])
+    const slugTransform = useCallback((value) => {
+    if (value && typeof value === 'string')
+        return value.trim()
+            .toLowerCase()
+            .replace(/[^a-zA-Z0-9\s-]/g, '')
+            .replace(/\s+/g, '-')
+    return ''
+}, [])
 
 
     // useEffect() is used to watch changes in the form, especially the title, and automatically update the slug. when the Form was displayed. 
     React.useEffect(() => {
         const subscription = watch((value, { name }) => {
             if (name === 'title') {
-                setValues('slug', slugTransform(value.title, { shouldValidate: true }))
+                setValue('slug', slugTransform(value.title), { shouldValidate: true })
             }
         })
 
         return () => {                       // return is used to stop/unsubscribe the watcher when the 'component is removed or when form was not displayed'.
             subscription.unsubscribe()      // unsubscribe() is a method used to stop the form watcher/subscription.
         }
-    }, [watch, slugTransform, setValues])
+    }, [watch, slugTransform, setValue])
 
     return (
         <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
@@ -111,6 +112,7 @@ function PostForm({ post }) {
                 />
                 {post && (
                     <div className="w-full mb-4">
+                        {console.log("Featured Image ID:", post.featuredImage)}
                         <img
                             src={appwriteService.getFilePreview(post.featuredImage)}
                             alt={post.title}
