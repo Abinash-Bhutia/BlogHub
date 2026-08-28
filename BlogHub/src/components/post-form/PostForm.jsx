@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { Button, Input, Select, RTE } from '../index'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import apppwriteService from '../../appwrite/config'
+import appwriteService from '../../appwrite/config'
 
 
 function PostForm({ post }) {
@@ -11,7 +11,7 @@ function PostForm({ post }) {
     const { register, handleSubmit, watch, setValue, getValues, control } = useForm({
         defaultValues: {
             title: post?.title || '',
-            slug: post?.slug || '',
+            slug: post?.$id || '',
             content: post?.content || '',
             status: post?.status || 'active',
         }
@@ -23,13 +23,13 @@ function PostForm({ post }) {
     const submit = async (data) => {
         // check data is present or not, if data is present update the post or data or file.
         if (post) {
-            const file = data.image[0] ? await apppwriteService.uploadFile(data.image[0]) : null
+            const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null
 
             if (file) {
-                apppwriteService.deleteFile(post.featuredImage)
+                appwriteService.deleteFile(post.featuredImage)
             }
 
-            const dbPost = await apppwriteService.updatePost(post.$id, {
+            const dbPost = await appwriteService.updatePost(post.$id, {
                 ...data,
                 featuredImage: file ? file.$id : undefined,
 
@@ -40,14 +40,14 @@ function PostForm({ post }) {
             }
 
         } else {      // there we create the post, if nothing is for update.
-            const file = data.image[0] ? await apppwriteService.uploadFile(data.image[0]) : null
+            const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null
 
             if (file) {
                 const fileId = file.$id
                 data.featuredImage = fileId
 
                 console.log("Slug being submitted:", data.slug)
-                const dbPost = await apppwriteService.createPost({
+                const dbPost = await appwriteService.createPost({
                     ...data,
                     userId: userData.$id,
                 })
@@ -114,7 +114,7 @@ function PostForm({ post }) {
                     <div className="w-full mb-4">
                         {console.log("Featured Image ID:", post.featuredImage)}
                         <img
-                            src={appwriteService.getFilePreview(post.featuredImage)}
+                            src={appwriteService.getFileView(post.featuredImage)}
                             alt={post.title}
                             className="rounded-lg"
                             onError={(e) => {
