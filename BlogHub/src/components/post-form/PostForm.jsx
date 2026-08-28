@@ -23,7 +23,7 @@ function PostForm({ post }) {
     const submit = async (data) => {
         // check data is present or not, if data is present update the post or data or file.
         if (post) {
-            const file = data.image[0] ? apppwriteService.uploadFile(data.image[0]) : null
+            const file = data.image[0] ? await apppwriteService.uploadFile(data.image[0]) : null
 
             if (file) {
                 apppwriteService.deleteFile(post.featuredImage)
@@ -60,13 +60,13 @@ function PostForm({ post }) {
 
     // change the title into 'slug'
     const slugTransform = useCallback((value) => {
-    if (value && typeof value === 'string')
-        return value.trim()
-            .toLowerCase()
-            .replace(/[^a-zA-Z0-9\s-]/g, '')
-            .replace(/\s+/g, '-')
-    return ''
-}, [])
+        if (value && typeof value === 'string')
+            return value.trim()
+                .toLowerCase()
+                .replace(/[^a-zA-Z0-9\s-]/g, '')
+                .replace(/\s+/g, '-')
+        return ''
+    }, [])
 
 
     // useEffect() is used to watch changes in the form, especially the title, and automatically update the slug. when the Form was displayed. 
@@ -117,6 +117,10 @@ function PostForm({ post }) {
                             src={appwriteService.getFilePreview(post.featuredImage)}
                             alt={post.title}
                             className="rounded-lg"
+                            onError={(e) => {
+                                console.log("Image failed:", e)
+                                console.log("Image ID:", post.featuredImage)
+                            }}
                         />
                     </div>
                 )}
