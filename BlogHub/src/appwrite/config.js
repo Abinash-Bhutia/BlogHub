@@ -22,7 +22,7 @@ export class Service {
             return await this.tablesDB.createRow(
                 conf.appwriteDatabaseId,
                 conf.appwriteTableId,
-                slug,             // there i am using 'slug' value as a ID
+                slug,             // there i am using 'slug' value as a rowID
                 {
                     title,
                     content,
@@ -89,7 +89,7 @@ export class Service {
     }
 
     // get all posts or rows (through the quries)
-    async getPosts(queries = [Query.equal("status", "active")]) {
+    async getPosts(queries = [Query.equal("status", "active")]) {                  // queries are only use in index of appwrite
         try {
             return await this.tablesDB.listRows(
                 conf.appwriteDatabaseId,
@@ -103,7 +103,7 @@ export class Service {
     }
 
 
-    //----- file upload services into Storage 
+    ///----- file upload services into Storage ------------
     // file upload
     async uploadFile(file) {
         try {

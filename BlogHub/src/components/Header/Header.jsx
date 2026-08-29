@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 function Header() {
   const authStatus = useSelector((state) => state.auth.status)
   const navigate = useNavigate()
-
+ 
   const navItems = [
     {
       name: 'Home',
@@ -40,9 +40,9 @@ function Header() {
     <header className='py-3 shadow bg-gray-500'>
       <Container>
         <nav className='flex'>
-          <div className='mr-4'>
+          <div className='mr-4 mt-2'>
             <Link to='/'>
-              <Logo />
+              <Logo width='70px'/>
             </Link>
           </div>
           <ul className='flex ml-auto'>
@@ -70,7 +70,9 @@ function Header() {
 
 export default Header
 
-// note: Link is for navigation through UI links. useNavigate() is for navigation programmatically from our JavaScript logic.
+// note: Link is for navigation through UI links. 
+// useNavigate() is for navigation programmatically from our JavaScript logic.
 
-// syntax {auth && (item)}
+
+// syntax => {auth && (item)}
 // it means if 'auth' is true then item display 
