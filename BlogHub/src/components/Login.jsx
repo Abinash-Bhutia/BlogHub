@@ -24,17 +24,17 @@ function Login() {
     } catch (error) {
       setError(error.message)
     }
-  }
+  } 
 
   return (
-    <div className='flex items-center justify-center w-full'>
+    <div className='flex items-center justify-center w-full mt-6 mb-6'>
       <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
-        <div className='mb-2 flex justify-center'>
+        <div className='mb-4 flex justify-center'>
           <span className='inline-block w-full max-w-[100px]'>
             <Logo width='100%' />
           </span>
         </div>
-        <h2 className='text-center text-2xl font-bold leading-tight'>
+        <h2 className='text-center text-2xl font-bold leading-tight text-black/60'>
           Sign in to your Account
         </h2>
         <p className='mt-2 text-center text-base text-black/60'>
@@ -88,4 +88,4 @@ export default Login
 
 // or  All input fields state are managed by 'register' and automatically time of submit all the values are pick by 'handleSubmit' and submit the form.
 
-// {...register(key, values)} => we use spread because, if we are not using spread  all the inputs where using 'register' that values are  override.
+// {...register(key, values)} => we use spread because, if we are not using spread  all the inputs where using 'register' that values are also override.

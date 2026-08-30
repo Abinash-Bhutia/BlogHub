@@ -9,7 +9,7 @@ function Button({            // these are set some default values & can override
     ...props            // if any other proprties send by user spread that
 }) {
   return (            // backticks are use in curlibresses, backticks are use beacuse user can set some properties
-    <button className={`px-4 py-2  rounded-lg ${bgColor} ${textColor} ${className}`} {...props}>
+    <button className={`px-4 py-2  hover:bg-blue-800 duration-200 rounded-lg ${bgColor} ${textColor} ${className}`} {...props}>
         {children}
     </button>
   )
