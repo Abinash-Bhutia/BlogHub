@@ -5,3 +5,15 @@ function Container({children}) {
 }
 
 export default Container
+
+// PAGE
+//  ↓
+// "What page am I showing?"
+
+// CONTAINER
+//  ↓
+// "How should the page content be positioned?"
+
+// COMPONENT
+//  ↓
+// "What functionality/UI should I display?"

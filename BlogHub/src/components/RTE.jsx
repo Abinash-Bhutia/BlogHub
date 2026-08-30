@@ -55,7 +55,7 @@ export default function RTE({ name, control, label, defaultValue = '' }) {
 
 // this component is essentially a reusable Rich Text Editor that connects TinyMCE with React Hook Form.
 
-// Controller => It  connects a third-party component like TinyMCE with React Hook Form.
+// Controller =>  It connects a third-party component like TinyMCE with React Hook Form.
 // React Hook Form's useForm() gives you a control object.
 // control={control} is used to connect the Controller with your React Hook Form.
 

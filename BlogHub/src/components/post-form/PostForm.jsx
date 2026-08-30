@@ -21,7 +21,7 @@ function PostForm({ post }) {
     const userData = useSelector(state => state.auth.userData)
 
     const submit = async (data) => {
-        // check data is present or not, if data is present update the post or data or file.
+        // check data is present or not, if data is present update the post or data.
         if (post) {
             const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null
 
@@ -29,9 +29,10 @@ function PostForm({ post }) {
                 appwriteService.deleteFile(post.featuredImage)
             }
 
-            const dbPost = await appwriteService.updatePost(post.$id, {
+            const dbPost = await appwriteService.updatePost(
+                post.$id, {
                 ...data,
-                featuredImage: file ? file.$id : undefined,
+                featuredImage: file ? file.$id : undefined,              // 'featuredImage' is a unique 'id' of image we store in appwrite storage
 
             })
 
@@ -39,18 +40,18 @@ function PostForm({ post }) {
                 navigate(`/post/${dbPost.$id}`)
             }
 
-        } else {      // there we create the post, if nothing is for update.
+        } else {      // when we create the post, if nothing is for update.
             const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null
 
             if (file) {
                 const fileId = file.$id
                 data.featuredImage = fileId
 
-                console.log("Slug being submitted:", data.slug)
                 const dbPost = await appwriteService.createPost({
                     ...data,
                     userId: userData.$id,
                 })
+
                 if (dbPost) {
                     navigate(`/post/${dbPost.$id}`)
                 }
@@ -86,7 +87,7 @@ function PostForm({ post }) {
         <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
             <div className="w-2/3 px-2">
                 <Input
-                    label="Title :"
+                    label="Title : "
                     placeholder="Title"
                     className="mb-4"
                     {...register("title", { required: true })}
@@ -106,28 +107,23 @@ function PostForm({ post }) {
                 <Input
                     label="Featured Image :"
                     type="file"
-                    className="mb-4"
+                    className="mb-4 "
                     accept="image/png, image/jpg, image/jpeg, image/gif"
                     {...register("image", { required: !post })}
                 />
                 {post && (
                     <div className="w-full mb-4">
-                        {console.log("Featured Image ID:", post.featuredImage)}
                         <img
                             src={appwriteService.getFileView(post.featuredImage)}
                             alt={post.title}
                             className="rounded-lg"
-                            onError={(e) => {
-                                console.log("Image failed:", e)
-                                console.log("Image ID:", post.featuredImage)
-                            }}
                         />
                     </div>
                 )}
                 <Select
                     options={["active", "inactive"]}
                     label="Status"
-                    className="mb-4"
+                    className="mb-4 text-gray-700"
                     {...register("status", { required: true })}
                 />
                 <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full">
@@ -141,7 +137,11 @@ function PostForm({ post }) {
 export default PostForm
 
 // note: there we pass the 'control' obj from useForm() to access the 'Controller'
-// title: post?.title || ""   =>  it means if already post was there then that title, otherwise empty because of no title or create a post
+// title: post?.title || ""   =>  it means if already post was there then that title, otherwise empty because of no title 
 
 // register connects an input field to React Hook Form.
 // "When the form is submitted, validate the form and then give me the form data."
+
+// unsubscribe() => It is a method provided by the subscription object returned by React Hook Form's watch().
+ 
+// setValue() comes from: useForm()

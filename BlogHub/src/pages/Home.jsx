@@ -6,7 +6,8 @@ function Home() {
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
-        appwriteService.getPosts().then((posts) => {
+        appwriteService.getPosts()
+        .then((posts) => {
             if (posts) {
                 setPosts(posts.rows || [])
             }
@@ -19,8 +20,8 @@ function Home() {
                 <Container>
                     <div className='flex flex-wrap'>
                         <div className='p-2 w-full'>
-                            <h1 className='text-2xl font-bold hover:text-gray-500'>
-                                Login to read posts
+                            <h1 className='text-2xl font-bold hover:text-gray-500 duration-200'>
+                                Give your Ideas...
                             </h1>
                         </div>
                     </div>

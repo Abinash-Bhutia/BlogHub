@@ -89,7 +89,7 @@ export class Service {
     }
 
     // get all posts or rows (through the quries)
-    async getPosts(queries = [Query.equal("status", "active")]) {                  // queries are only use in index of appwrite
+    async getPosts(queries = [Query.equal("status", "active")]) {                  // queries are only when use in index of appwrite
         try {
             return await this.tablesDB.listRows(
                 conf.appwriteDatabaseId,

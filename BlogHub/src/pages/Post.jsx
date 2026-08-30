@@ -16,7 +16,8 @@ export default function Post() {
 
     useEffect(() => {
         if (slug) {
-            appwriteService.getPost(slug).then((post) => {
+            appwriteService.getPost(slug)
+            .then((post) => {
                 if (post) setPost(post);
                 else navigate("/");
             });
@@ -24,7 +25,8 @@ export default function Post() {
     }, [slug, navigate]);
 
     const deletePost = () => {
-        appwriteService.deletePost(post.$id).then((status) => {
+        appwriteService.deletePost(post.$id)
+        .then((status) => {
             if (status) {
                 appwriteService.deleteFile(post.featuredImage);
                 navigate("/");
@@ -65,3 +67,6 @@ export default function Post() {
         </div>
     ) : null;
 }
+
+
+// parse() is used to convert an HTML string into React elements so it can be displayed as formatted HTML.
